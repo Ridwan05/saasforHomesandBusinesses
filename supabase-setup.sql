@@ -1,4 +1,4 @@
--- MeshGrid Pipeline Manager — Supabase schema
+-- Interconnected Mini-Grid Pipeline Manager — Supabase schema
 -- Run in Supabase Dashboard › SQL Editor to replicate the database.
 -- Safe to re-run: drops existing tables before recreating.
 
