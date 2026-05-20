@@ -1,7 +1,7 @@
 const { useState, useMemo, useEffect, useCallback } = React;
 
 // ─── SUPABASE CONFIG ──────────────────────────────────────────────────────────
-const SUPABASE_CONFIG = window.INTERCONNECTED_MINIGRID_CONFIG || {};
+const SUPABASE_CONFIG = window.SAAS_HOMES_BUSINESSES_CONFIG || {};
 const SUPABASE_URL = SUPABASE_CONFIG.SUPABASE_URL || "";
 const SUPABASE_KEY = SUPABASE_CONFIG.SUPABASE_ANON_KEY || "";
 const HEADERS = {
@@ -157,11 +157,11 @@ async function dbSet(table, payload) {
 
 // ─── SEED DATA ────────────────────────────────────────────────────────────────
 const SEED_PROJECTS = [
-  { id: 1, name: "Kwali Cluster Interconnected Mini-Grid", developer: "SolarNG Ltd", state: "FCT", stage: "Project Development", clusterLead: "Amaka O.", rag: "Green", loi: true, jda: true, credit: false, fc: false, size: 12.8, connections: 800, pvCapacity: 0, startDate: "2025-11-01", targetCompletion: "2026-06-30", actualCompletion: "", subsidyExpected: 48000000, capexPerConn: 95000, duration: 0, issue: "", lastUpdate: "2026-05-01", targetClose: "Q4 2026", updateCompliance: 95, evidenceCompliance: 90, jdacost: 0 },
-  { id: 2, name: "Bwari Rural Interconnected Mini-Grid", developer: "GreenPower NG", state: "FCT", stage: "Project Preparation", clusterLead: "Emeka T.", rag: "Amber", loi: true, jda: true, credit: false, fc: false, size: 8.4, connections: 600, pvCapacity: 0, startDate: "2026-01-15", targetCompletion: "2026-09-30", actualCompletion: "", subsidyExpected: 36000000, capexPerConn: 102000, duration: 0, issue: "LOI counterparty signature delayed", lastUpdate: "2026-04-28", targetClose: "Q1 2027", updateCompliance: 70, evidenceCompliance: 65, jdacost: 0 },
-  { id: 3, name: "Kuje East Interconnected Mini-Grid", developer: "Volts Africa", state: "FCT", stage: "Project Preparation", clusterLead: "Fatima K.", rag: "Red", loi: true, jda: false, credit: false, fc: false, size: 9.6, connections: 450, pvCapacity: 0, startDate: "2025-12-01", targetCompletion: "2026-05-31", actualCompletion: "", subsidyExpected: 27000000, capexPerConn: 110000, duration: 0, issue: "Financial model incomplete — Promise yet to update", lastUpdate: "2026-04-25", targetClose: "Q2 2027", updateCompliance: 60, evidenceCompliance: 55, jdacost: 0 },
-  { id: 4, name: "Nasarawa South Interconnected Mini-Grid", developer: "EnergyCo NG", state: "Nasarawa", stage: "Preliminary Assessment", clusterLead: "Amaka O.", rag: "Green", loi: true, jda: false, credit: false, fc: false, size: 7.7, connections: 520, pvCapacity: 0, startDate: "2025-08-01", targetCompletion: "2026-04-30", actualCompletion: "", subsidyExpected: 0, capexPerConn: 88000, duration: 0, issue: "", lastUpdate: "2026-04-30", targetClose: "Q3 2027", updateCompliance: 100, evidenceCompliance: 100, jdacost: 0 },
-  { id: 5, name: "Ogun West Interconnected Mini-Grid", developer: "BrightGrid Ltd", state: "Ogun", stage: "Preliminary Assessment", clusterLead: "Uche B.", rag: "Green", loi: false, jda: false, credit: false, fc: false, size: 24.8, connections: 950, pvCapacity: 0, startDate: "2026-03-01", targetCompletion: "2027-01-31", actualCompletion: "", subsidyExpected: 0, capexPerConn: 91000, duration: 0, issue: "", lastUpdate: "2026-05-01", targetClose: "Q4 2027", updateCompliance: 100, evidenceCompliance: 100, jdacost: 0 },
+  { id: 1, name: "Kwali Cluster", developer: "SolarNG Ltd", state: "FCT", stage: "Project Development", clusterLead: "Amaka O.", rag: "Green", loi: true, jda: true, credit: false, fc: false, size: 12.8, connections: 800, pvCapacity: 0, startDate: "2025-11-01", targetCompletion: "2026-06-30", actualCompletion: "", subsidyExpected: 48000000, capexPerConn: 95000, duration: 0, issue: "", lastUpdate: "2026-05-01", targetClose: "Q4 2026", updateCompliance: 95, evidenceCompliance: 90, jdacost: 0 },
+  { id: 2, name: "Bwari Rural", developer: "GreenPower NG", state: "FCT", stage: "Project Preparation", clusterLead: "Emeka T.", rag: "Amber", loi: true, jda: true, credit: false, fc: false, size: 8.4, connections: 600, pvCapacity: 0, startDate: "2026-01-15", targetCompletion: "2026-09-30", actualCompletion: "", subsidyExpected: 36000000, capexPerConn: 102000, duration: 0, issue: "LOI counterparty signature delayed", lastUpdate: "2026-04-28", targetClose: "Q1 2027", updateCompliance: 70, evidenceCompliance: 65, jdacost: 0 },
+  { id: 3, name: "Kuje East", developer: "Volts Africa", state: "FCT", stage: "Project Preparation", clusterLead: "Fatima K.", rag: "Red", loi: true, jda: false, credit: false, fc: false, size: 9.6, connections: 450, pvCapacity: 0, startDate: "2025-12-01", targetCompletion: "2026-05-31", actualCompletion: "", subsidyExpected: 27000000, capexPerConn: 110000, duration: 0, issue: "Financial model incomplete — Promise yet to update", lastUpdate: "2026-04-25", targetClose: "Q2 2027", updateCompliance: 60, evidenceCompliance: 55, jdacost: 0 },
+  { id: 4, name: "Nasarawa South", developer: "EnergyCo NG", state: "Nasarawa", stage: "Preliminary Assessment", clusterLead: "Amaka O.", rag: "Green", loi: true, jda: false, credit: false, fc: false, size: 7.7, connections: 520, pvCapacity: 0, startDate: "2025-08-01", targetCompletion: "2026-04-30", actualCompletion: "", subsidyExpected: 0, capexPerConn: 88000, duration: 0, issue: "", lastUpdate: "2026-04-30", targetClose: "Q3 2027", updateCompliance: 100, evidenceCompliance: 100, jdacost: 0 },
+  { id: 5, name: "Ogun West", developer: "BrightGrid Ltd", state: "Ogun", stage: "Preliminary Assessment", clusterLead: "Uche B.", rag: "Green", loi: false, jda: false, credit: false, fc: false, size: 24.8, connections: 950, pvCapacity: 0, startDate: "2026-03-01", targetCompletion: "2027-01-31", actualCompletion: "", subsidyExpected: 0, capexPerConn: 91000, duration: 0, issue: "", lastUpdate: "2026-05-01", targetClose: "Q4 2027", updateCompliance: 100, evidenceCompliance: 100, jdacost: 0 },
 ];
 const SEED_TEAM = [
   { id: 1, name: "Amaka O.", role: "Cluster Lead", assigned: 2, tasksDue: 5, overdue: 1, compliance: 90, rag: "Amber" },
@@ -171,14 +171,14 @@ const SEED_TEAM = [
   { id: 5, name: "Ngozi P.", role: "Commercial Analyst", assigned: 2, tasksDue: 4, overdue: 0, compliance: 100, rag: "Green" },
 ];
 const SEED_ISSUES = [
-  { id: 1, project: "Bwari Rural Interconnected Mini-Grid", category: "Commercial", description: "LOI counterparty delayed — AgAssetCo chasing", owner: "Emeka T.", raised: "2026-04-10", due: "2026-05-10", status: "Open", rag: "Amber" },
-  { id: 2, project: "Kuje East Interconnected Mini-Grid", category: "Financial Model", description: "Promise financial model v3 not yet received — blocks bankability submission", owner: "Fatima K.", raised: "2026-04-20", due: "2026-05-05", status: "Escalated", rag: "Red" },
-  { id: 3, project: "Kwali Cluster Interconnected Mini-Grid", category: "Deployment", description: "Daily deployment rate below 90/day — contractor capacity constraint", owner: "Amaka O.", raised: "2026-04-28", due: "2026-05-12", status: "Open", rag: "Amber" },
+  { id: 1, project: "Bwari Rural", category: "Commercial", description: "LOI counterparty delayed — AgAssetCo chasing", owner: "Emeka T.", raised: "2026-04-10", due: "2026-05-10", status: "Open", rag: "Amber" },
+  { id: 2, project: "Kuje East", category: "Financial Model", description: "Promise financial model v3 not yet received — blocks bankability submission", owner: "Fatima K.", raised: "2026-04-20", due: "2026-05-05", status: "Escalated", rag: "Red" },
+  { id: 3, project: "Kwali Cluster", category: "Deployment", description: "Daily deployment rate below 90/day — contractor capacity constraint", owner: "Amaka O.", raised: "2026-04-28", due: "2026-05-12", status: "Open", rag: "Amber" },
 ];
 const SEED_DEPLOYMENT = [
-  { id: 1, sitename: "Kwali North", project: "Kwali Cluster Interconnected Mini-Grid", state: "FCT", LGA: "Kwali", connections: 140, PV: 42 },
-  { id: 2, sitename: "Kwali South", project: "Kwali Cluster Interconnected Mini-Grid", state: "FCT", LGA: "Gwagwalada", connections: 180, PV: 54 },
-  { id: 3, sitename: "Bwari East", project: "Bwari Rural Interconnected Mini-Grid", state: "FCT", LGA: "Bwari", connections: 80, PV: 24 },
+  { id: 1, sitename: "Kwali North", project: "Kwali Cluster", state: "FCT", LGA: "Kwali", connections: 140, PV: 42 },
+  { id: 2, sitename: "Kwali South", project: "Kwali Cluster", state: "FCT", LGA: "Gwagwalada", connections: 180, PV: 54 },
+  { id: 3, sitename: "Bwari East", project: "Bwari Rural", state: "FCT", LGA: "Bwari", connections: 80, PV: 24 },
 ];
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
@@ -470,7 +470,7 @@ function App() {
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
                   <thead><tr style={{ background: "#1a2a4a", color: "#fff" }}>{["PROJECT","LOI","JDA","CONN.","SIZE","SHARE"].map(h=><th key={h} style={{padding:"9px 10px",textAlign:"left",fontSize:9,fontWeight:800,letterSpacing:0.8}}>{h}</th>)}</tr></thead>
                   <tbody>
-                    {projects.map((p,i)=><tr key={p.id} style={{background:i%2===0?"#f7f9fc":"#fff",borderBottom:"1px solid #eef"}}><td style={{padding:"7px 10px",fontWeight:600,color:"#1a2a4a",fontSize:11}}>{(p.name||"").replace(" Interconnected Mini-Grid","")}</td><td style={{padding:"7px 10px",textAlign:"center"}}><Tick val={p.loi}/></td><td style={{padding:"7px 10px",textAlign:"center"}}><Tick val={p.jda}/></td><td style={{padding:"7px 10px",fontSize:11}}>{fmt(p.connections)}</td><td style={{padding:"7px 10px",fontWeight:700,fontSize:11}}>₦{p.size.toFixed(1)}Bn</td><td style={{padding:"7px 10px",color:"#3b6cb7",fontWeight:700,fontSize:11}}>{totalSize>0?((p.size/totalSize)*100).toFixed(1):0}%</td></tr>)}
+                    {projects.map((p,i)=><tr key={p.id} style={{background:i%2===0?"#f7f9fc":"#fff",borderBottom:"1px solid #eef"}}><td style={{padding:"7px 10px",fontWeight:600,color:"#1a2a4a",fontSize:11}}>{(p.name||"")}</td><td style={{padding:"7px 10px",textAlign:"center"}}><Tick val={p.loi}/></td><td style={{padding:"7px 10px",textAlign:"center"}}><Tick val={p.jda}/></td><td style={{padding:"7px 10px",fontSize:11}}>{fmt(p.connections)}</td><td style={{padding:"7px 10px",fontWeight:700,fontSize:11}}>₦{p.size.toFixed(1)}Bn</td><td style={{padding:"7px 10px",color:"#3b6cb7",fontWeight:700,fontSize:11}}>{totalSize>0?((p.size/totalSize)*100).toFixed(1):0}%</td></tr>)}
                     <tr style={{background:"#1a2a4a",color:"#fff",fontWeight:800}}><td style={{padding:"8px 10px",fontSize:11}}>Total</td><td style={{padding:"8px 10px",textAlign:"center"}}>{loiCount}</td><td style={{padding:"8px 10px",textAlign:"center"}}>{jdaCount}</td><td style={{padding:"8px 10px",fontSize:11}}>{fmt(projects.reduce((s,p)=>s+p.connections,0))}</td><td style={{padding:"8px 10px",fontSize:11}}>₦{totalSize.toFixed(1)}Bn</td><td style={{padding:"8px 10px",fontSize:11}}>100%</td></tr>
                   </tbody>
                 </table>
@@ -589,7 +589,7 @@ function App() {
                   {filteredDeployment.map((site,i)=>(
                     <tr key={site.id} style={{background:i%2===0?"#f7f9fc":"#fff",borderBottom:"1px solid #eef"}}>
                       <td style={{padding:"9px 10px",fontWeight:700}}>{site.sitename}</td>
-                      <td style={{padding:"9px 10px",color:"#555",fontSize:11}}>{(site.project||"").replace(" Interconnected Mini-Grid","")}</td>
+                      <td style={{padding:"9px 10px",color:"#555",fontSize:11}}>{(site.project||"")}</td>
                       <td style={{padding:"9px 10px",color:"#666"}}>{site.state}</td>
                       <td style={{padding:"9px 10px",color:"#666"}}>{site.LGA}</td>
                       <td style={{padding:"9px 10px",fontWeight:700}}>{fmt(site.connections)}</td>
@@ -754,7 +754,7 @@ function App() {
       </div>
 
       {/* MODALS */}
-      {projectModal!==null&&<Modal title={projectModal==="add"?"Add Interconnected Mini-Grid Project":"Edit Project"} onClose={()=>setProjectModal(null)} onSave={saveProject}><ProjectForm form={pForm} setForm={setPForm}/></Modal>}
+      {projectModal!==null&&<Modal title={projectModal==="add"?"Add Project":"Edit Project"} onClose={()=>setProjectModal(null)} onSave={saveProject}><ProjectForm form={pForm} setForm={setPForm}/></Modal>}
 
       {issueModal!==null&&<Modal title={issueModal==="add"?"Log Issue":"Edit Issue"} onClose={()=>setIssueModal(null)} onSave={saveIssue}>
         <div className="rsp-form-2col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>

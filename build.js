@@ -13,7 +13,7 @@ if (process.env.VERCEL && (!supabaseUrl || !supabaseAnonKey)) {
 
 await writeFile(
   "dist/config.js",
-  `window.INTERCONNECTED_MINIGRID_CONFIG = ${JSON.stringify(
+  `window.SAAS_HOMES_BUSINESSES_CONFIG = ${JSON.stringify(
     {
       SUPABASE_URL: supabaseUrl,
       SUPABASE_ANON_KEY: supabaseAnonKey,

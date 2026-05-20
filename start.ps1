@@ -39,7 +39,7 @@ while (-not $listener) {
 if ($port -ne $startPort) {
   Write-Host "Port $startPort is already in use, using $port instead."
 }
-Write-Host "Interconnected Mini-Grid Pipeline Manager: http://localhost:$port/"
+Write-Host "SaaS for Homes and Businesses: http://localhost:$port/"
 
 try {
   while ($true) {

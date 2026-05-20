@@ -10,7 +10,7 @@ $ErrorActionPreference = "Stop"
 
 $configPath = Join-Path $PSScriptRoot "public\config.js"
 $content = @"
-window.INTERCONNECTED_MINIGRID_CONFIG = {
+window.SAAS_HOMES_BUSINESSES_CONFIG = {
   SUPABASE_URL: "$SupabaseUrl",
   SUPABASE_ANON_KEY: "$AnonKey",
 };

@@ -1,4 +1,4 @@
--- Interconnected Mini-Grid Pipeline Manager — Supabase schema (sshb_-prefixed copy)
+-- SaaS for Homes and Businesses — Supabase schema (sshb_-prefixed copy)
 -- Run in Supabase Dashboard › SQL Editor.
 -- This script creates a parallel set of tables prefixed with `sshb_` that mirror
 -- the originals defined in supabase-setup.sql. The original tables are left
