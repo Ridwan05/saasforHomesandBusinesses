@@ -5,3 +5,4 @@ npm-debug.log*
 .env.local
 supabase/config.toml
 .claude/
+public/config.js
