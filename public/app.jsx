@@ -14,33 +14,46 @@ const DB_TABLES = {
   projects: {
     name: "sshb_projects",
     columns: ["id", "name", "developer", "state", "stage", "clusterLead", "rag", "size", "connections", "pvCapacity", "loi", "jda", "credit", "fc", "startDate", "targetCompletion", "actualCompletion", "subsidyExpected", "capexPerConn", "duration", "issue", "lastUpdate", "targetClose", "updateCompliance", "evidenceCompliance", "jdacost"],
+    intColumns: ["id", "connections", "subsidyExpected", "capexPerConn", "duration", "updateCompliance", "evidenceCompliance", "jdacost"],
   },
   team: {
     name: "sshb_team_members",
     columns: ["id", "name", "role", "assigned"],
+    intColumns: ["id", "assigned"],
   },
   issues: {
     name: "sshb_issues",
     columns: ["id", "project", "owner", "status", "due"],
+    intColumns: ["id"],
   },
   deployment: {
     name: "sshb_deployment_sites",
     columns: ["id", "sitename", "project", "state", "LGA", "connections", "PV"],
+    intColumns: ["id", "connections"],
   },
   tasks: {
     name: "sshb_tasks",
     columns: ["id", "activityname", "project", "projectstage", "vertical", "assignedTo", "startDate", "dueDate", "status"],
+    intColumns: ["id"],
   },
   activitiesdb: {
     name: "sshb_activities",
     columns: ["id", "activityname", "projectstage", "activitycategory"],
+    intColumns: ["id"],
   },
 };
 
-function pickColumns(row, columns) {
+function pickColumns(row, columns, intColumns) {
+  const ints = new Set(intColumns || []);
   return columns.reduce((out, key) => {
     const value = row[key];
-    out[key] = value === "" ? null : value ?? null;
+    if (value === "" || value == null) {
+      out[key] = null;
+    } else if (ints.has(key) && typeof value === "number" && Number.isFinite(value)) {
+      out[key] = Math.round(value);
+    } else {
+      out[key] = value;
+    }
     return out;
   }, {});
 }
@@ -128,7 +141,7 @@ async function dbGet(table, seed) {
 async function dbSet(table, payload) {
   if (!SUPABASE_URL || !SUPABASE_KEY) return;
   const config = DB_TABLES[table];
-  const rows = payload.map(row => pickColumns(row, config.columns));
+  const rows = payload.map(row => pickColumns(row, config.columns, config.intColumns));
   console.log(`[db] ${table} upsert payload:`, JSON.stringify(rows[0]));
   const ids = rows.map(row => row.id).filter(id => id != null);
   const deleteFilter = ids.length ? `not.in.(${ids.join(",")})` : "not.is.null";

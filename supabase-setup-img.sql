@@ -23,7 +23,7 @@ create table public.sshb_projects (
   rag                text,
   size               numeric,
   updated_at         timestamptz not null default now(),
-  connections        smallint,
+  connections        bigint,
   loi                boolean default false,
   jda                boolean default false,
   credit             boolean default false,
@@ -40,7 +40,7 @@ create table public.sshb_projects (
   "evidenceCompliance" integer default 100,
   "pvCapacity"       numeric default 0,
   duration           integer default 0,
-  jdacost            smallint
+  jdacost            bigint
 );
 
 create table public.sshb_team_members (
