@@ -1,19 +1,19 @@
--- Interconnected Mini-Grid Pipeline Manager — Supabase schema (img_-prefixed copy)
+-- Interconnected Mini-Grid Pipeline Manager — Supabase schema (sshb_-prefixed copy)
 -- Run in Supabase Dashboard › SQL Editor.
--- This script creates a parallel set of tables prefixed with `img_` that mirror
+-- This script creates a parallel set of tables prefixed with `sshb_` that mirror
 -- the originals defined in supabase-setup.sql. The original tables are left
--- untouched. Safe to re-run: drops only the img_-prefixed objects before recreating.
+-- untouched. Safe to re-run: drops only the sshb_-prefixed objects before recreating.
 
-drop table if exists public.img_tasks            cascade;
-drop table if exists public.img_deployment_sites cascade;
-drop table if exists public.img_issues           cascade;
-drop table if exists public.img_team_members     cascade;
-drop table if exists public.img_projects         cascade;
-drop table if exists public.img_activities       cascade;
+drop table if exists public.sshb_tasks            cascade;
+drop table if exists public.sshb_deployment_sites cascade;
+drop table if exists public.sshb_issues           cascade;
+drop table if exists public.sshb_team_members     cascade;
+drop table if exists public.sshb_projects         cascade;
+drop table if exists public.sshb_activities       cascade;
 
 -- ─── TABLES ──────────────────────────────────────────────────────────────────
 
-create table public.img_projects (
+create table public.sshb_projects (
   id                 bigint  primary key,
   name               text    not null,
   developer          text,
@@ -43,7 +43,7 @@ create table public.img_projects (
   jdacost            smallint
 );
 
-create table public.img_team_members (
+create table public.sshb_team_members (
   id             bigint  primary key,
   name           text    not null,
   role           text,
@@ -54,7 +54,7 @@ create table public.img_team_members (
   completedtasks integer default 0
 );
 
-create table public.img_issues (
+create table public.sshb_issues (
   id         bigint primary key,
   project    text,
   owner      text,
@@ -63,7 +63,7 @@ create table public.img_issues (
   updated_at timestamptz not null default now()
 );
 
-create table public.img_deployment_sites (
+create table public.sshb_deployment_sites (
   id          bigint primary key,
   sitename    text   not null,
   project     text,
@@ -74,7 +74,7 @@ create table public.img_deployment_sites (
   "PV"        numeric default 0
 );
 
-create table public.img_tasks (
+create table public.sshb_tasks (
   id           bigint primary key,
   activityname text   not null,
   project      text,
@@ -95,7 +95,7 @@ create table public.img_tasks (
   updated_at   timestamptz not null default now()
 );
 
-create table public.img_activities (
+create table public.sshb_activities (
   id               bigint  primary key,
   activityname     text    not null,
   projectstage     text,
@@ -115,28 +115,28 @@ begin
 end;
 $$;
 
-create trigger set_img_projects_updated_at
-  before update on public.img_projects
+create trigger set_sshb_projects_updated_at
+  before update on public.sshb_projects
   for each row execute function public.set_updated_at();
 
-create trigger set_img_team_members_updated_at
-  before update on public.img_team_members
+create trigger set_sshb_team_members_updated_at
+  before update on public.sshb_team_members
   for each row execute function public.set_updated_at();
 
-create trigger set_img_issues_updated_at
-  before update on public.img_issues
+create trigger set_sshb_issues_updated_at
+  before update on public.sshb_issues
   for each row execute function public.set_updated_at();
 
-create trigger set_img_deployment_sites_updated_at
-  before update on public.img_deployment_sites
+create trigger set_sshb_deployment_sites_updated_at
+  before update on public.sshb_deployment_sites
   for each row execute function public.set_updated_at();
 
-create trigger set_img_tasks_updated_at
-  before update on public.img_tasks
+create trigger set_sshb_tasks_updated_at
+  before update on public.sshb_tasks
   for each row execute function public.set_updated_at();
 
-create trigger set_img_activities_updated_at
-  before update on public.img_activities
+create trigger set_sshb_activities_updated_at
+  before update on public.sshb_activities
   for each row execute function public.set_updated_at();
 
 -- Generic overdue stamper. Uses only NEW, so it's shareable across both schemas.
@@ -152,13 +152,13 @@ begin
 end;
 $$;
 
-create trigger img_tasks_auto_overdue
-  before insert or update on public.img_tasks
+create trigger sshb_tasks_auto_overdue
+  before insert or update on public.sshb_tasks
   for each row execute function public.set_task_overdue();
 
 -- Per-schema sync: this one references specific tables, so it must be its own
--- function targeting img_tasks / img_team_members.
-create or replace function public.img_sync_member_task_counts()
+-- function targeting sshb_tasks / sshb_team_members.
+create or replace function public.sshb_sync_member_task_counts()
 returns trigger language plpgsql as $$
 declare
   old_name text;
@@ -174,18 +174,18 @@ begin
   end if;
 
   if old_name is not null and (tg_op = 'DELETE' or old_name is distinct from new_name) then
-    update public.img_team_members set
-      "tasksDue"     = (select count(*) from public.img_tasks where "assignedTo" = old_name and status = 'Overdue'),
-      pendingtasks   = (select count(*) from public.img_tasks where "assignedTo" = old_name and status = 'Pending'),
-      completedtasks = (select count(*) from public.img_tasks where "assignedTo" = old_name and status = 'Completed')
+    update public.sshb_team_members set
+      "tasksDue"     = (select count(*) from public.sshb_tasks where "assignedTo" = old_name and status = 'Overdue'),
+      pendingtasks   = (select count(*) from public.sshb_tasks where "assignedTo" = old_name and status = 'Pending'),
+      completedtasks = (select count(*) from public.sshb_tasks where "assignedTo" = old_name and status = 'Completed')
     where name = old_name;
   end if;
 
   if new_name is not null then
-    update public.img_team_members set
-      "tasksDue"     = (select count(*) from public.img_tasks where "assignedTo" = new_name and status = 'Overdue'),
-      pendingtasks   = (select count(*) from public.img_tasks where "assignedTo" = new_name and status = 'Pending'),
-      completedtasks = (select count(*) from public.img_tasks where "assignedTo" = new_name and status = 'Completed')
+    update public.sshb_team_members set
+      "tasksDue"     = (select count(*) from public.sshb_tasks where "assignedTo" = new_name and status = 'Overdue'),
+      pendingtasks   = (select count(*) from public.sshb_tasks where "assignedTo" = new_name and status = 'Pending'),
+      completedtasks = (select count(*) from public.sshb_tasks where "assignedTo" = new_name and status = 'Completed')
     where name = new_name;
   end if;
 
@@ -193,40 +193,40 @@ begin
 end;
 $$;
 
-create trigger img_tasks_sync_member_counts
-  after insert or update or delete on public.img_tasks
-  for each row execute function public.img_sync_member_task_counts();
+create trigger sshb_tasks_sync_member_counts
+  after insert or update or delete on public.sshb_tasks
+  for each row execute function public.sshb_sync_member_task_counts();
 
 -- ─── ROW LEVEL SECURITY ───────────────────────────────────────────────────────
 
-alter table public.img_projects          enable row level security;
-alter table public.img_team_members      enable row level security;
-alter table public.img_issues            enable row level security;
-alter table public.img_deployment_sites  enable row level security;
-alter table public.img_tasks             enable row level security;
-alter table public.img_activities        enable row level security;
+alter table public.sshb_projects          enable row level security;
+alter table public.sshb_team_members      enable row level security;
+alter table public.sshb_issues            enable row level security;
+alter table public.sshb_deployment_sites  enable row level security;
+alter table public.sshb_tasks             enable row level security;
+alter table public.sshb_activities        enable row level security;
 
-create policy "Allow browser access img_projects"
-  on public.img_projects for all to anon using (true) with check (true);
+create policy "Allow browser access sshb_projects"
+  on public.sshb_projects for all to anon using (true) with check (true);
 
-create policy "Allow browser access img_team_members"
-  on public.img_team_members for all to anon using (true) with check (true);
+create policy "Allow browser access sshb_team_members"
+  on public.sshb_team_members for all to anon using (true) with check (true);
 
-create policy "Allow browser access img_issues"
-  on public.img_issues for all to anon using (true) with check (true);
+create policy "Allow browser access sshb_issues"
+  on public.sshb_issues for all to anon using (true) with check (true);
 
-create policy "Allow browser access img_deployment_sites"
-  on public.img_deployment_sites for all to anon using (true) with check (true);
+create policy "Allow browser access sshb_deployment_sites"
+  on public.sshb_deployment_sites for all to anon using (true) with check (true);
 
-create policy "Allow browser access img_tasks"
-  on public.img_tasks for all to anon using (true) with check (true);
+create policy "Allow browser access sshb_tasks"
+  on public.sshb_tasks for all to anon using (true) with check (true);
 
-create policy "Allow browser access img_activities"
-  on public.img_activities for all to anon using (true) with check (true);
+create policy "Allow browser access sshb_activities"
+  on public.sshb_activities for all to anon using (true) with check (true);
 
 -- ─── OPTIONAL: daily cron to catch any tasks missed by the trigger ────────────
 -- Enable pg_cron in Dashboard → Database → Extensions, then run:
--- select cron.schedule('mark-overdue-img-tasks', '0 0 * * *',
--- $$update public.img_tasks set status = 'Overdue'
+-- select cron.schedule('mark-overdue-sshb-tasks', '0 0 * * *',
+-- $$update public.sshb_tasks set status = 'Overdue'
 -- where "dueDate" < current_date
 -- and status not in ('Completed', 'Overdue')$$);
