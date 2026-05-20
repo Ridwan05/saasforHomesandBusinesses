@@ -12,27 +12,27 @@ const HEADERS = {
 
 const DB_TABLES = {
   projects: {
-    name: "img_projects",
+    name: "sshb_projects",
     columns: ["id", "name", "developer", "state", "stage", "clusterLead", "rag", "size", "connections", "pvCapacity", "loi", "jda", "credit", "fc", "startDate", "targetCompletion", "actualCompletion", "subsidyExpected", "capexPerConn", "duration", "issue", "lastUpdate", "targetClose", "updateCompliance", "evidenceCompliance", "jdacost"],
   },
   team: {
-    name: "img_team_members",
+    name: "sshb_team_members",
     columns: ["id", "name", "role", "assigned"],
   },
   issues: {
-    name: "img_issues",
+    name: "sshb_issues",
     columns: ["id", "project", "owner", "status", "due"],
   },
   deployment: {
-    name: "img_deployment_sites",
+    name: "sshb_deployment_sites",
     columns: ["id", "sitename", "project", "state", "LGA", "connections", "PV"],
   },
   tasks: {
-    name: "img_tasks",
+    name: "sshb_tasks",
     columns: ["id", "activityname", "project", "projectstage", "vertical", "assignedTo", "startDate", "dueDate", "status"],
   },
   activitiesdb: {
-    name: "img_activities",
+    name: "sshb_activities",
     columns: ["id", "activityname", "projectstage", "activitycategory"],
   },
 };
